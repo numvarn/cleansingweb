@@ -4,6 +4,7 @@
 from bs4 import BeautifulSoup
 from urllib import urlopen
 from urlparse import urlparse
+import csv
 import os
 
 def getWeb(url):
@@ -17,6 +18,11 @@ def getWeb(url):
 
     # remove javascript
     to_extract = soup.findAll('script')
+    for item in to_extract:
+        item.extract()
+
+    # remove inner CSS
+    to_extract = soup.findAll('style')
     for item in to_extract:
         item.extract()
 
@@ -57,17 +63,21 @@ def removeEmptyLine(filename):
     file2.write(filecontent)
     file2.close()
 
+# Start program
+def start():
+    rows = csv.reader(open("items.csv","rb"))
+    count = 0
+    for row in rows:
+        if count > 0:
+            getWeb(row[1])
+            print count,' : ', row[2],'\t\t\t: ', row[1]
+
+            if count > 5:
+                break
+        count += 1
+
 if __name__ == '__main__':
-    # url = 'http://www.samunpri.com/?p=21843'
-    # url = 'http://www.rspg.or.th/plants_data/herbs/herbs_02.htm'
-    # url = 'http://manager.co.th/Politics/ViewNews.aspx?NewsID=9580000116404'
-    url = 'http://phisan.sskru.ac.th/blog/about'
-    # url = 'http://clonedbabies.com/category/สมุนไพรไทย'
-    # url = u'http://ไทยสมุนไพร.net'
-    # url = 'http://thaiherbtherapy.com/รักษาโรคด้วยสมุนไพร'
-    # url = 'http://frynn.com/ข้าวสารป่า'
-    # url = 'http://www.rspg.or.th/plants_data/herbs/herbs_01.htm'
-    getWeb(url)
+    start()
 
 
 
