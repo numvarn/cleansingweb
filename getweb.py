@@ -71,9 +71,6 @@ def start():
         if count > 0:
             getWeb(row[1])
             print count,' : ', row[2],'\t\t\t: ', row[1]
-
-            if count > 5:
-                break
         count += 1
 
 if __name__ == '__main__':
