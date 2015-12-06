@@ -1,12 +1,14 @@
 #!/usr/bin/python
 
 import csv
+import os
+from urlparse import urlparse
 
-filterNetLoc = ["www.networkherbs.com"]
+filterNetLoc = ["www.thaihof.org"]
 
-targetOutput = open("/Users/phisan/Desktop/filtered.csv", "wb")
+targetOutput = open("/Users/phisanshukkhi/Desktop/filtered.csv", "wb")
 writer = csv.writer(targetOutput, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
-rows = csv.reader(open("/Users/phisan/ResearchCode/webcrawler/TextMining/spiders/items.csv","rb"))
+rows = csv.reader(open("/Users/phisanshukkhi/TextMining/TextMining/spiders/items.csv","rb"))
 
 netloclist = []
 urllist = []
@@ -19,11 +21,17 @@ for row in rows:
 
 index = 0
 for netloc in netloclist:
-    newrow = []
-    newrow.append(netloclist[index])
-    newrow.append(urllist[index])
-    newrow.append(desclist[index])
-    writer.writerow(newrow)
+    url = urllist[index]
+    path = urlparse(url).path
+    ext = os.path.splitext(path)[1]
+
+    if ext!=".jpg" and ext!=".jpeg" and ext!=".JPG" and ext!=".JPEG" and ext!=".pdf" and ext!=".doc" and ext!=".gif" and ext!=".swf" and ext!=".png" and ext!=".js":
+        newrow = []
+        newrow.append(netloclist[index])
+        newrow.append(urllist[index])
+        newrow.append(desclist[index])
+        writer.writerow(newrow)
+
     index += 1
 
 targetOutput.close()
