@@ -4,11 +4,11 @@ import csv
 import os
 from urlparse import urlparse
 
-filterNetLoc = ["www.thaihof.org"]
+filterNetLoc = ["thaiherb.most.go.th"]
 
 targetOutput = open("/Users/phisanshukkhi/Desktop/filtered.csv", "wb")
 writer = csv.writer(targetOutput, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
-rows = csv.reader(open("/Users/phisanshukkhi/TextMining/TextMining/spiders/items.csv","rb"))
+rows = csv.reader(open("/Users/phisanshukkhi/TextMining/TextMining/spiders/items3.csv","rb"))
 
 netloclist = []
 urllist = []
