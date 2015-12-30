@@ -4,10 +4,10 @@
 from bs4 import BeautifulSoup
 from urllib import urlopen
 from urlparse import urlparse
-import csv
+from getURLDB import GetPath
 import os
 
-def getWeb(url):
+def getWeb(urlid, url, directory):
     html = urlopen(url).read()
     soup = BeautifulSoup(html, 'html.parser')
 
@@ -30,8 +30,7 @@ def getWeb(url):
     text = u''.join(text).encode('utf-8').strip()
 
     # process for file name from url
-    r = urlparse(url)
-    filename = r[1]+'-'+r[4]+'.txt'
+    filename = directory+'/'+str(urlid)+'.txt'
 
     # write result to file
     writeToFile(text, filename)
@@ -65,17 +64,25 @@ def removeEmptyLine(filename):
 
 # Start program
 def start():
-    rows = csv.reader(open("items.csv","rb"))
-    count = 0
-    for row in rows:
-        if count > 0:
-            getWeb(row[1])
-            print count,' : ', row[2],'\t\t\t: ', row[1]
-        count += 1
+    netloc = 'beezab.com'
+    directory = '/Users/phisanshukkhi/Desktop/'+netloc
 
+    # Create Object from GetPath Class
+    # And query urlpath from DB
+    getPath = GetPath(netloc)
+    rows = getPath.getResult()
+
+    # Create directory for store file
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+    count = 1
+    for row in rows:
+        print "GET : ", count," : ",row[0]," : ",row[1]
+        count += 1
+        getWeb(row[0], row[1], directory)
+
+# Main Program
 if __name__ == '__main__':
     start()
-
-
-
 
