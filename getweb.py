@@ -3,37 +3,52 @@
 
 from bs4 import BeautifulSoup
 from urllib import urlopen
-from urlparse import urlparse
 from getURLDB import GetPath
 import os
+import sys
 
 def getWeb(urlid, url, directory):
-    html = urlopen(url).read()
-    soup = BeautifulSoup(html, 'html.parser')
+    # process from local html file
+    file_path = directory+'/'+str(urlid)+'.html'
 
-    # for none utf-8 web page
-    if soup.original_encoding != 'utf-8':
-        decoded_html = html.decode('tis-620')
-        soup = BeautifulSoup(decoded_html, 'html.parser')
+    # check file is exist before process
+    if os.path.isfile(file_path):
+        html = urlopen(file_path).read()
+        soup = BeautifulSoup(html, 'html.parser')
 
-    # remove javascript
-    to_extract = soup.findAll('script')
-    for item in to_extract:
-        item.extract()
+        # for none utf-8 web page
+        if soup.original_encoding != 'utf-8':
+            try :
+                decoded_html = html.decode('tis-620')
+                soup = BeautifulSoup(decoded_html, 'html.parser')
+            except :
+                pass
 
-    # remove inner CSS
-    to_extract = soup.findAll('style')
-    for item in to_extract:
-        item.extract()
+        # remove javascript
+        to_extract = soup.findAll('script')
+        for item in to_extract:
+            item.extract()
 
-    text = soup.body.get_text()
-    text = u''.join(text).encode('utf-8').strip()
+        # remove inner CSS
+        to_extract = soup.findAll('style')
+        for item in to_extract:
+            item.extract()
 
-    # process for file name from url
-    filename = directory+'/'+str(urlid)+'.txt'
+        # check current document is HTML or FEED
+        # text = soup.body.get_text()
+        text = soup.get_text()
+        text = u''.join(text).encode('utf-8').strip()
 
-    # write result to file
-    writeToFile(text, filename)
+        # process for file name from url
+        target = directory+'/processed/'
+        if not os.path.exists(target):
+            os.makedirs(target)
+        filename = target+str(urlid)+'.txt'
+
+        # write result to file
+        writeToFile(text, filename)
+    else:
+        print "file ID "+str(urlid)+" is not exist."
 
 def writeToFile(str, filename):
     # write data in tmp file
@@ -63,8 +78,8 @@ def removeEmptyLine(filename):
     file2.close()
 
 # Start program
-def start():
-    netloc = 'beezab.com'
+def start(netloc):
+    # netloc = 'beezab.com'
     directory = '/Users/phisanshukkhi/Desktop/'+netloc
 
     # Create Object from GetPath Class
@@ -78,11 +93,14 @@ def start():
 
     count = 1
     for row in rows:
-        print "GET : ", count," : ",row[0]," : ",row[1]
+        print "Processed : ", count," : ID -- ",row[0]
         count += 1
         getWeb(row[0], row[1], directory)
 
 # Main Program
 if __name__ == '__main__':
-    start()
+    if len(sys.argv) != 1:
+        start(sys.argv[1])
+    else:
+        print "Please, Enter Network Location"
 

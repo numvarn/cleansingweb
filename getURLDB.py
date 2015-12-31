@@ -16,7 +16,8 @@ class GetPath:
             unix_socket='/Applications/MAMP/tmp/mysql/mysql.sock',
             port=3306, user='web',
             passwd='web',
-            db='crawler')
+            db='crawler',
+            charset='utf8')
 
         self.cur = conn.cursor()
 
@@ -42,7 +43,7 @@ class GetPath:
 
 
 if __name__ == '__main__':
-    getPath = GetPath('www.thaihealth.or.th')
+    getPath = GetPath('www.herbdee.com')
     rows = getPath.getResult()
     for row in rows:
-        print row[0]," : ",row[1]
+        print row[0]," : ",row[1].encode('latin-1', 'replace')
