@@ -14,9 +14,11 @@ class GetPath:
         conn = pymysql.connect(
             host='127.0.0.1',
             unix_socket='/Applications/MAMP/tmp/mysql/mysql.sock',
-            port=3306, user='web',
+            port=3306,
+            user='web',
             passwd='web',
             db='crawler',
+            use_unicode=True,
             charset='utf8')
 
         self.cur = conn.cursor()
@@ -43,7 +45,7 @@ class GetPath:
 
 
 if __name__ == '__main__':
-    getPath = GetPath('www.herbdee.com')
+    getPath = GetPath('health.kapook.com')
     rows = getPath.getResult()
     for row in rows:
-        print row[0]," : ",row[1].encode('latin-1', 'replace')
+        print row[0]," : ",row[1].encode('utf-8', 'replace')

@@ -22,6 +22,7 @@ def getWeb(urlid, url, directory):
                 decoded_html = html.decode('tis-620')
                 soup = BeautifulSoup(decoded_html, 'html.parser')
             except :
+                print "Dectect error ", urlid, " -- ", url
                 pass
 
         # remove javascript
@@ -78,7 +79,7 @@ def removeEmptyLine(filename):
     file2.close()
 
 # Start program
-def start(netloc):
+def main(netloc):
     # netloc = 'beezab.com'
     directory = '/Users/phisanshukkhi/Desktop/'+netloc
 
@@ -93,14 +94,15 @@ def start(netloc):
 
     count = 1
     for row in rows:
-        print "Processed : ", count," : ID -- ",row[0]
+        print "Processed : ", count," : ID -- ",row[0], " : ", row[1]
         count += 1
         getWeb(row[0], row[1], directory)
 
 # Main Program
+# Get Network Location from command line argument
 if __name__ == '__main__':
     if len(sys.argv) != 1:
-        start(sys.argv[1])
+        main(sys.argv[1])
     else:
         print "Please, Enter Network Location"
 
