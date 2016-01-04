@@ -34,8 +34,8 @@ class GetPath:
                           INNER JOIN crawler_field_data_field_url_id AS b \
                           INNER JOIN crawler_field_data_field_netloc AS c \
                           ON a.entity_id=b.entity_id AND a.entity_id=c.entity_id \
-                          WHERE c.field_netloc_tid=%s \
-                          ORDER BY b.field_url_id_value", (tid[0], ))
+                          WHERE c.field_netloc_tid=%s AND b.field_url_id_value > %s \
+                          ORDER BY b.field_url_id_value", (tid[0], 0))
 
         self.cur.close()
         conn.close()
@@ -45,7 +45,7 @@ class GetPath:
 
 
 if __name__ == '__main__':
-    getPath = GetPath('health.kapook.com')
+    getPath = GetPath('health.sanook.com')
     rows = getPath.getResult()
     for row in rows:
         print row[0]," : ",row[1].encode('utf-8', 'replace')
