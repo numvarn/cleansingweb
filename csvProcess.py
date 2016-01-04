@@ -4,9 +4,9 @@ import csv
 import os
 from urlparse import urlparse
 
-targetOutput = open("/Users/phisanshukkhi/Desktop/filtered.csv", "wb")
+targetOutput = open("/Users/phisan/Desktop/filtered.csv", "wb")
 writer = csv.writer(targetOutput, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
-rows = csv.reader(open("/Users/phisanshukkhi/Desktop/www.phargarden.com.csv","rb"))
+rows = csv.reader(open("/Users/phisan/Desktop/urllist.csv","rb"))
 
 count = 0
 for row in rows:
@@ -16,7 +16,7 @@ for row in rows:
         ext = os.path.splitext(path)[1]
 
         if ext!=".jpg" and ext!=".jpeg" and ext!=".JPG" and ext!=".JPEG" and ext!=".pdf" and ext!=".doc" and ext!=".gif" and ext!=".swf" and ext!=".png" and ext!=".js":
-            newrow = ['www.phargarden.com', row[0]]
+            newrow = ['health.mthai.com', row[0]]
             writer.writerow(newrow)
             count += 1
 
