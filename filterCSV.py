@@ -4,7 +4,7 @@ import csv
 import os
 from urlparse import urlparse
 
-filterNetLoc = ["health.mthai.com"]
+filterNetLoc = ["www.networkherbs.com"]
 
 targetOutput = open("/Users/phisan/Desktop/filtered.csv", "wb")
 writer = csv.writer(targetOutput, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
